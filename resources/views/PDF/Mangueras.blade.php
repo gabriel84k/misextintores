@@ -18,10 +18,10 @@
                         </th>
                         <th scope="col"> 
                             <h5 style="font-size: 10px;" class="info">
-                                +342 453654  - +342 2981520
-                                ventas@sigex.com.ar
-                                Parque Tecnológico Litoral Centro – Ruta Nacional 168 – Paraje «El Pozo»
-                                www.Sigex.com.ar
+                                Office: +54 297- 4480206
+                                vangersrl@gmail.com
+                                Vanger S.R.L. - Los Molles 603 - Jose Perez 3575 - Comodoro Rivadavia  (Chubut)
+                                www.Vangersrl.com
                             </h5>
                                 
                         </th>
@@ -141,34 +141,7 @@
                     <table>
                         <tbody>
                             <tr class="text-center">
-                                <td colspan="2" style="width: 35em;">
-                                    <div class="col-lg-6">
-                                        <div style="height:7em;"></div>
-                                        ________________________          
-                                        <p>Recibí Conforme</p>
-                                    </div>
-                                </td>
-                                <td colspan="3" style="width: 14em;">
-                                    <div class="col-lg-6" >
-                                        <br>
-                                        <img src="logo/FIRMA/firma.png" style="width: 14em;">
-                                        __________________________
-                                        <div class="text-left">
-                                            <div class="col-lg-2" >
-                                                <b>Germán Ricardo Alvarez</b>
-                                            </div>
-                                            <div class="col-lg-2" >
-                                                Ing. Civil Industrial
-                                            </div>
-                                            <div class="col-lg-2" >
-                                                <b>Soc. Acman Ltda.</b>
-                                            </div>
-                                            <div class="col-lg-2" >
-                                                21-13.456.789.4
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
+                              
                             </tr>
                         </tbody>
                     </table>
