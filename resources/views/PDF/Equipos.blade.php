@@ -54,12 +54,13 @@
                     <tr class="text-center">
                        						
                         <th >Nro Equipo</th>
-                        <th >Ubicación</th>
+                        <!--<th >Ubicación</th>-->
                         <th >Agente</th>
                         <th >Marca</th>
                         <th >Capacidad</th>
-                        <th >FF</th>
+                        <th >Fecha Fabricación</th>
                         <th >VTO. Carga</th>
+
                         
                         
                     </tr>
@@ -72,28 +73,28 @@
 
                     {{  $VCaño=date_format(date_create($item->vencimiento_carga),"Y")}}
                     {{  $VCmes=date_format(date_create($item->vencimiento_carga),"m")}}
-                    
-                    
+                    {{  $FF = $item->fecha_fabricacion}}
+
                         @if (($año >= $VCaño && $VCmes < $mes) || ($VCaño < $año))
                             <tr style="background-color: rgb(218, 160, 160);">
                                 <td>{{$item->nro_equipo_evolution}}</td>
-                                <td>{{$item->ubicacion}}</td>
+                                <!--<td>{{$item->ubicacion}}</td>-->
                                 <td>{{$item->tipo}}</td>
                                 <td>{{$item->marca}}</td>
                                 <td>{{$item->capacidad.' '.$item->unidad}}</td>
+                                <td>{{$FF}}</td>
                                 <td>{{$VCmes.'/'.$VCaño}}</td>
-                            
-                            </tr> 
+                            </tr>
                         @else
                             <tr>
                                 <td>{{$item->nro_equipo_evolution}}</td>
-                                <td>{{$item->ubicacion}}</td>
+                                <!--<td>{{$item->ubicacion}}</td>-->
                                 <td>{{$item->tipo}}</td>
                                 <td>{{$item->marca}}</td>
                                 <td>{{$item->capacidad.' '.$item->unidad}}</td>
+                                <td>{{$FF}}</td>
                                 <td>{{$VCmes.'/'.$VCaño}}</td>
-
-                            </tr> 
+                            </tr>
                         @endif
                     @endforeach
                 </tbody>
@@ -149,9 +150,9 @@
                                 </td>
                                 <td colspan="3" style="width: 14em;">
                                     <div class="col-lg-6" >
-                                        <br>
-                                        
+                                        <div style="height:7em;"></div>
                                         __________________________
+                                        <p>Firma</p>
                                         <div class="text-left">
                                             <!--<div class="col-lg-2" >
                                                 <b>Germán Ricardo Alvarez</b>
@@ -168,6 +169,7 @@
                                         </div>
                                     </div>
                                 </td>
+
                             </tr>
                         </tbody>
                     </table>
