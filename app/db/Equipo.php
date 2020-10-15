@@ -99,7 +99,7 @@ class Equipo extends Model
         'ubicacion' => [
             'tipo'=>'int',
             'visible'=>true,
-            'name'=>'puesto',
+            'name'=>'empresaAnterior',
             'muestra'=>'Ubicación',
             'verdetalle'=>true
         ],

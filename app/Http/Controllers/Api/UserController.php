@@ -118,6 +118,7 @@ class UserController extends Controller
                             $M_sucursal->users()->attach($usuario->id);
                         }else{
                             $M_sucursal->users()->attach($usuario->id);
+                            
                         }
                         
                     }
@@ -147,12 +148,13 @@ class UserController extends Controller
                      #- Cargamos las reaciones entre Sucursales y Usuarios
                     
                      foreach ($sucursales as $key => $value) {
-                        $M_sucursal=(new Sucursales)::where('idSucursal',$value['idSucursal'])->first();
+                        $M_sucursal=Sucursales::where('idSucursal',$value['idSucursal'])->first();
                         if ($M_sucursal){
                             $M_sucursal->idsucursal=$value['idSucursal'];
                             $M_sucursal->nombre=$value['nombre'];
                             $M_sucursal->domicilio=$value['calle'];
-                            $M_sucursal->update();                            
+                            $M_sucursal->update();   
+                                                   
                         }else{
                             $M_sucursal=(new Sucursales);
                             $M_sucursal->idsucursal=$value['idSucursal'];
@@ -239,5 +241,39 @@ class UserController extends Controller
            
         }
        
+    }
+
+    /**
+     * Elimina sucursal y todo lo que se relaciona
+     * 
+     */
+    public function Destroy_sucursal($id,$nivel){
+        try {
+           
+            $sucursal=Sucursales::where('idsucursal',$id)->first();
+            if ($nivel==0){
+                $sucursal->delete();
+            }else{
+
+                foreach ($sucursal->sectors as $key => $value) {
+                    $value->delete();
+                }
+                foreach ($sucursal->elementos as $key => $value) {
+                    $value->delete();
+                }
+                foreach ($sucursal->planilla as $key => $value) {
+                    $value->delete();
+                }
+                foreach ($sucursal->revisionperiodicas as $key => $value) {
+                    $value->delete();
+                }
+            }
+            return \Response::json(['status'=>0,'descripcion'=>'La Sucursal: '.$sucursal->nombre.' a sido Eliminada y todo lo relacionado a ella.','data'=>'']);
+            
+        } catch (\Throwable $th) {
+            //$log=(new logControllers)->error($th, 'Imagenes','destroy');
+            return \Response::json(['status'=>-1,'descripcion'=>$th.getMessage(),'data'=>'']);
+          
+        }
     }
 }

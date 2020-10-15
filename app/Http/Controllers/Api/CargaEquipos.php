@@ -71,7 +71,7 @@ class CargaEquipos extends Controller
                         }
                        
                         $ElementoTipo= $this->_Elemento($MElemento,$campos['equipos'][$key]);
-                      
+                        
                         if ($ElementoTipo != 'ok'){
                              
                             array_push ( $arr ,'Se Produjo un error al crear uno de los elementos: '. $ElementoTipo );

@@ -46,6 +46,10 @@ use App\db\Sucursales;
 
 class PdfController extends Controller
 {
+    public function __construct(){
+        ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+        ini_set('memory_limit', '3000M'); //This might be too large, but depends on the data set
+    }
     public function Equipos(Request $request, $tipo){
         set_time_limit(300); 
         

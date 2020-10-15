@@ -26,6 +26,18 @@ class EquiposController extends Controller
             
             $user=Auth::user();
             $sucursal=Auth::user()->sucursales()->get();
+            # - Páginas totales en tabla -#
+                if (request()->get('total')){
+                    if (request()->get('total')>14 && request()->get('total')<101){
+                        $totalpage=request()->get('total');
+                    }else{
+                        $totalpage=15;
+                    }
+                    
+                }else{
+                    $totalpage=15;
+                }
+            #- Fin Paginas Totales-#
             
             foreach ($sucursal as $key => $Suc_val) {
                 $array_suc[$key]=$Suc_val->id;
@@ -43,9 +55,9 @@ class EquiposController extends Controller
                 'fecha_fabricacion','fecha_ultimo_ph','sector','baja','codigo_interno_cliente',
                 'vencimiento_carga','vencimiento_ph','elemento_id','empresaAnterior')
                                     ->WhereIn('elemento_id',$arr_eq)
-                                    ->paginate(12);    
+                                    ->paginate($totalpage);    
                 $pag = $elementotipo->toArray();
-                $pag = ($pag["current_page"]-1)*12;
+                $pag = ($pag["current_page"]-1)*$totalpage;
             }
             
             foreach ($elementotipo as $key => $valueEquipo) {
@@ -107,7 +119,20 @@ class EquiposController extends Controller
     {
         $señal=0;
         $campos= request()->all();
-        
+
+        # - Páginas totales en tabla -#
+            if (request()->get('total')){
+                if (request()->get('total')>14 && request()->get('total')<101){
+                    $totalpage=request()->get('total');
+                }else{
+                    $totalpage=15;
+                }
+                
+            }else{
+                $totalpage=15;
+            }
+        #- Fin Paginas Totales-#
+
         foreach ($campos as $key => $value) {
             if ($value!=''){
                 $señal=1;
@@ -126,7 +151,7 @@ class EquiposController extends Controller
                                         'vencimiento_carga','vencimiento_ph','sucursal_id','empresaAnterior')
                                         ->join('elementos','elementos.id','extintors.elemento_id')
                                         ->whereIn('elementos.sucursal_id',$array_suc)
-                                        ->paginate(12);
+                                        ->paginate($totalpage);
                 
             }else{    
                 foreach ($sucursal as $key => $Suc_val) {
@@ -177,11 +202,11 @@ class EquiposController extends Controller
                                     }
                                 })
                                 ->whereIn('elementos.sucursal_id',$array_suc)
-                                ->paginate(12);
+                                ->paginate($totalpage);
             }
               
             $pag = $equipos->toArray();
-            $pag = ($pag["current_page"]-1)*12;
+            $pag = ($pag["current_page"]-1)*$totalpage;
             
             foreach ($equipos as $key => $valueEquipo) {
                 $valueEquipo->item=($key+1)+$pag;

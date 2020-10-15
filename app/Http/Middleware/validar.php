@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
-
+use Illuminate\Support\Facades\Auth;
 use Closure;
 
 class validar 
@@ -17,7 +17,8 @@ class validar
     {
       
         if ($request->user()->estado != 1) {
-            //return redirect('/login');
+            Auth::logout();
+            return redirect()->to('/')->with('warning', 'Your session has expired because your account is deactivated.');
         }
         return $next($request);
     }

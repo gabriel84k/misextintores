@@ -53,62 +53,76 @@ class SucursalSheet implements  WithTitle,WithHeadings, WithEvents,FromCollectio
             
             
             $Val_Sectores=array();
-            foreach ($sectores as $key_sectores => $value_sectores) {
-                
-                $puestos=$value_sectores->puesto()->orderby('nroPuesto')->get();
-                
-                $Val_Puestos= array();
-            
-                foreach ($puestos as $key => $value_insp) {
-                    $rowtype=$value_insp->row_type;
-                    $tipopuesto=$value_insp->$rowtype;
-                    
-                    $Val_Puestos[$key]['sector']=$value_sectores->nombre;           #- Sectores.-
-                    $Val_Puestos[$key]['N°']=$value_insp->nroPuesto;
-                    $Val_Puestos[$key]['ubicacion']=$value_insp->ubicacion;         #- Puestos.-
-                    switch ($value_insp->habilitado) {
-                        case 1:
-                            $Val_Puestos[$key]['habilitado']='Si';
-                            break;
-                        
-                        case 0:
-                            $Val_Puestos[$key]['habilitado']='No';
-                            break;
-                    }
-                    
-                    $Val_Puestos[$key]['tipodepuesto']=strtoupper(str_replace(['segusur','egusur'],['',' de Derrame'],$value_insp->row_type)); 
-                    #-[Datos de los Puestos]-#
-                    
-                  
-                    if ($value_insp){
-                        if ($tipopuesto->codigoElemento){
-                            $Val_Puestos[$key]['elemento']=$tipopuesto->codigoElemento;
-                        }else{
-                            $elemetno=$tipopuesto->elemento()->first(); //Elemento::find($value_insp->elemento_id);
+            if (count($sectores) != 0){
 
-                            if ($elemetno){
-                                $rtype=$elemetno->row_type;
-                                $elemetno=$elemetno->$rtype()->first();
-                             
-                                if($rtype=='equipos'){
-                                    $Val_Puestos[$key]['elemento']='['.$elemetno->nro_equipo_evolution.'] - '.$elemetno->tipo.' - '.$elemetno->capacidad.' '.$elemetno->unidad;
-                                }elseif($rtype=='mangueras'){
-                                    $Val_Puestos[$key]['elemento']='['.$elemetno->numeroManguera.'] - '.$elemetno->boquillanombre. ' - '.$elemetno->uniones;
-                                }
-                                
+            
+                foreach ($sectores as $key_sectores => $value_sectores) {
+                    
+                    $puestos=$value_sectores->puesto()->orderby('nroPuesto')->get();
+                    
+                    $Val_Puestos= array();
+                
+                    foreach ($puestos as $key => $value_insp) {
+                        $rowtype=$value_insp->row_type;
+                        $tipopuesto=$value_insp->$rowtype;
+                        
+                        $Val_Puestos[$key]['sector']=$value_sectores->nombre;           #- Sectores.-
+                        $Val_Puestos[$key]['N°']=$value_insp->nroPuesto;
+                        $Val_Puestos[$key]['ubicacion']=$value_insp->ubicacion;         #- Puestos.-
+                        switch ($value_insp->habilitado) {
+                            case 1:
+                                $Val_Puestos[$key]['habilitado']='Si';
+                                break;
+                            
+                            case 0:
+                                $Val_Puestos[$key]['habilitado']='No';
+                                break;
+                        }
+                        
+                        $Val_Puestos[$key]['tipodepuesto']=strtoupper(str_replace(['segusur','egusur'],['',' de Derrame'],$value_insp->row_type)); 
+                        #-[Datos de los Puestos]-#
+                        
+                    
+                        if ($value_insp){
+                            if ($tipopuesto->codigoElemento){
+                                $Val_Puestos[$key]['elemento']=$tipopuesto->codigoElemento;
                             }else{
-                                $Val_Puestos[$key]['elemento']='no tiene';
+                                $elemetno=$tipopuesto->elemento()->first(); //Elemento::find($value_insp->elemento_id);
+
+                                if ($elemetno){
+                                    $rtype=$elemetno->row_type;
+                                    $elemetno=$elemetno->$rtype()->first();
+                                
+                                    if($rtype=='equipos'){
+                                        $Val_Puestos[$key]['elemento']='['.$elemetno->nro_equipo_evolution.'] - '.$elemetno->tipo.' - '.$elemetno->capacidad.' '.$elemetno->unidad;
+                                    }elseif($rtype=='mangueras'){
+                                        $Val_Puestos[$key]['elemento']='['.$elemetno->numeroManguera.'] - '.$elemetno->boquillanombre. ' - '.$elemetno->uniones;
+                                    }
+                                    
+                                }else{
+                                    $Val_Puestos[$key]['elemento']='no tiene';
+                                }
                             }
                         }
+                        $this->cant++;
                     }
-                    $this->cant++;
-                }
+                    
+                    $Val_Sectores[$key_sectores] = $Val_Puestos;
                 
-                $Val_Sectores[$key_sectores] = $Val_Puestos;
-            
+                }
+                return Collection::make($Val_Sectores);
+            }else{
+                $Val_Puestos= array();
+                $Val_Puestos[0]['elemento']='No Tiene';
+                $Val_Puestos[0]['tipodepuesto']='No Tiene';
+                $Val_Puestos[0]['sector']='No Tiene';
+                $Val_Puestos[0]['N°']='No Tiene';
+                $Val_Puestos[0]['ubicacion']='No Tiene';
+                $Val_Puestos[0]['habilitado']='No Tiene';
+                $Val_Sectores[0]=$Val_Puestos;
+                return Collection::make( $Val_Sectores);
             }
-        
-            return Collection::make($Val_Sectores);
+           
          
         } catch (\Throwable $th) {
             dd($th );

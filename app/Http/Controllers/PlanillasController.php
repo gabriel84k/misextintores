@@ -29,13 +29,24 @@ class PlanillasController extends Controller
         foreach ($sucursales as $key => $valSuc) {
             $arrSuc[$key]= $valSuc->id;
         }
-          
+        # - Páginas totales en tabla -#
+            if (request()->get('total')){
+                if (request()->get('total')>14 && request()->get('total')<101){
+                    $totalpage=request()->get('total');
+                }else{
+                    $totalpage=15;
+                }
+                
+            }else{
+                $totalpage=15;
+            }
+        #- Fin Paginas Totales-#
         //foreach varias sucursales
         $Planilla=Planilla::select('planillas.id', 'IdSigex', 'fecha_servicio', 'nro_planilla', 'orden_trabajo', 'cantidadMat', 'idEstado', 'nombre')
                                 ->whereIN('sucursal_id',$arrSuc)
                                 ->join('sucursales','sucursales.id','sucursal_id')
                                 ->orderby('fecha_servicio','DESC')
-                                ->paginate(15);
+                                ->paginate($totalpage);
         
        
         foreach ($Planilla as $key => $valPlan) {  
@@ -66,7 +77,18 @@ class PlanillasController extends Controller
         //
     }
     public function searchequipo($id){
-        
+        # - Páginas totales en tabla -#
+            if (request()->get('total')){
+                if (request()->get('total')>14 && request()->get('total')<101){
+                    $totalpage=request()->get('total');
+                }else{
+                    $totalpage=15;
+                }
+                
+            }else{
+                $totalpage=15;
+            }
+        #- Fin Paginas Totales-#
    
         $Planilla=(new Planilla)::Select('planillas.id','fecha_servicio', 'nro_planilla', 'cantidadMat', 'orden_trabajo',
                                          'realizoPH','extintors.observaciones','calificacion','estado','servicioARealizar'
@@ -75,7 +97,7 @@ class PlanillasController extends Controller
                                 ->join('elementos','elementos.id','servicios.elemento_id')
                                 ->join('extintors','extintors.elemento_id','elementos.id')
                                 ->where('extintors.id',$id)
-                                ->paginate(15);
+                                ->paginate($totalpage);
         foreach ($Planilla as $key => $valPlan) {  
             $valPlan->columnas=$valPlan->columns;
         }   
@@ -94,7 +116,18 @@ class PlanillasController extends Controller
             # code...
         }
        
-        //foreach varias sucursales
+        # - Páginas totales en tabla -#
+            if (request()->get('total')){
+                if (request()->get('total')>14 && request()->get('total')<101){
+                    $totalpage=request()->get('total');
+                }else{
+                    $totalpage=15;
+                }
+                
+            }else{
+                $totalpage=15;
+            }
+        #- Fin Paginas Totales-#
         $Planilla=(new Planilla)::select('planillas.id', 'IdSigex', 'fecha_servicio', 'nro_planilla', 'orden_trabajo', 'cantidadMat', 'idEstado', 'nombre')
                                 ->whereIN('sucursal_id',$arrSuc)
                                 ->join('sucursales','sucursales.id','sucursal_id')
@@ -113,7 +146,7 @@ class PlanillasController extends Controller
                                     }
                                 })
                                 ->orderby('fecha_servicio','DESC')
-                                ->paginate(15);
+                                ->paginate($totalpage);
         return $Planilla;   
     }
 
